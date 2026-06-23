@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MockInterview Hub</title>
+  <title>MockInterview Hub - Ace Your Interviews</title>
   <style>
-    /* === GLOBAL RESET & BASE === */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -26,7 +25,7 @@
       margin: 0 auto;
     }
 
-    /* === HEADER === */
+    /* Header */
     header {
       background: #fff;
       border-bottom: 1px solid #e7eaf3;
@@ -70,7 +69,7 @@
       gap: 12px;
     }
 
-    /* === BUTTONS === */
+    /* Buttons */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -99,13 +98,655 @@
     .btn-secondary:hover {
       background: #dfe8ff;
     }
-    .btn-danger {
-      background: #fee2e2;
-      color: #dc2626;
+    .btn-google {
+      background: #fff;
+      color: #333;
+      border: 1px solid #ddd;
+      width: 100%;
+      justify-content: center;
+      gap: 10px;
     }
-    .btn-danger:hover {
-      background: #fecaca;
+    .btn-google:hover {
+      background: #f8f9fa;
     }
+    .chip {
+      background: #f5f7fb;
+      color: #4b5a75;
+      font-size: 0.82rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    /* Modals */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal {
+      background: #fff;
+      border-radius: 24px;
+      padding: 40px;
+      max-width: 440px;
+      width: 92%;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: slideUp 0.3s ease;
+      position: relative;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #999;
+      padding: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      transition: background 0.2s;
+    }
+    .modal-close:hover {
+      background: #f0f0f0;
+    }
+    .modal h2 {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+    .modal p {
+      color: #5b647a;
+      margin-bottom: 24px;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      color: #122033;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #e7eaf3;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: border 0.2s;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: #5b7cfa;
+      box-shadow: 0 0 0 3px rgba(91, 124, 250, 0.1);
+    }
+    .form-actions {
+      margin-top: 20px;
+    }
+    .form-actions .btn {
+      width: 100%;
+      justify-content: center;
+      padding: 14px;
+    }
+    .form-footer {
+      margin-top: 16px;
+      text-align: center;
+      font-size: 0.95rem;
+      color: #5b647a;
+    }
+    .form-footer a {
+      color: #5b7cfa;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .form-footer a:hover {
+      text-decoration: underline;
+    }
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 20px 0;
+      color: #999;
+    }
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e7eaf3;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #122033;
+      color: #fff;
+      padding: 16px 24px;
+      border-radius: 12px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+      font-weight: 500;
+      z-index: 2000;
+      transform: translateY(120px);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .toast.error { background: #dc2626; }
+    .toast.success { background: #16a34a; }
+
+    /* Hero */
+    .hero {
+      padding: 72px 0 48px;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.95fr;
+      gap: 32px;
+      align-items: center;
+    }
+    .hero-content h1 {
+      font-size: clamp(2.4rem, 4.5vw, 4rem);
+      line-height: 1;
+      margin-bottom: 18px;
+      letter-spacing: -0.04em;
+    }
+    .hero-content p {
+      color: #5b647a;
+      font-size: 1rem;
+      max-width: 58ch;
+      margin-bottom: 28px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+    .stats-row {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+    .stat-pill {
+      background: #fff;
+      border: 1px solid #e7eaf3;
+      border-radius: 14px;
+      padding: 12px 16px;
+      min-width: 130px;
+    }
+    .stat-pill strong {
+      display: block;
+      font-size: 1.3rem;
+      color: #122033;
+    }
+    .preview-panel {
+      background: linear-gradient(180deg, #13244b, #213a78);
+      border-radius: 28px;
+      padding: 22px;
+      color: #fff;
+      box-shadow: 0 24px 60px rgba(19, 36, 75, 0.22);
+    }
+    .preview-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .preview-card {
+      background: linear-gradient(180deg, #f7f9ff, #eef4ff);
+      color: #122033;
+      border-radius: 20px;
+      padding: 20px;
+    }
+    .progress-bar {
+      height: 10px;
+      background: #dde7ff;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+    .progress-bar span {
+      display: block;
+      width: 72%;
+      height: 100%;
+      background: linear-gradient(90deg, #5b7cfa, #7c5cff);
+    }
+    .question-box {
+      margin-top: 18px;
+      background: #fff;
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid #e7eaf3;
+    }
+    .question-box h3 {
+      font-size: 0.95rem;
+      color: #5b647a;
+      margin-bottom: 8px;
+    }
+    .question-box p {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    .chip-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    /* Sections */
+    section {
+      padding: 48px 0;
+    }
+    .section-heading {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 32px;
+    }
+    .section-heading h2 {
+      font-size: clamp(1.8rem, 2.6vw, 2.6rem);
+      margin-bottom: 10px;
+    }
+    .section-heading p {
+      color: #5b647a;
+    }
+    .features-grid,
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 10px 30px rgba(18, 32, 51, 0.06);
+      border: 1px solid #eef1f7;
+    }
+    .icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: #eef3ff;
+      color: #3450c7;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .card h3 {
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+    .card p {
+      color: #5b647a;
+      font-size: 0.94rem;
+    }
+    .steps-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .step-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #dfe6ff;
+      margin-bottom: 8px;
+    }
+    .cta-box {
+      background: linear-gradient(90deg, #122149, #2845a5);
+      color: #fff;
+      border-radius: 24px;
+      padding: 42px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .cta-box h3 {
+      font-size: 1.8rem;
+      margin-bottom: 6px;
+    }
+    .cta-box p {
+      color: #cdddff;
+      max-width: 58ch;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid, .cta-box, .features-grid, .steps-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-grid { gap: 22px; }
+      .cta-box { align-items: flex-start; }
+      nav ul { display: none; }
+    }
+    @media (max-width: 640px) {
+      .nav-actions { display: flex; gap: 8px; }
+      .nav-actions .btn { padding: 8px 14px; font-size: 0.85rem; }
+      .hero { padding-top: 48px; }
+      .hero-actions { flex-direction: column; }
+      .hero-actions .btn { width: 100%; }
+      .modal { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="toast" class="toast"></div>
+
+  <!-- Login Modal -->
+  <div id="loginModal" class="modal-overlay">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
+      <h2>Welcome Back</h2>
+      <p>Sign in to continue your interview practice.</p>
+      <button class="btn btn-google" onclick="signInWithGoogle()">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Continue with Google
+      </button>
+      <div class="divider">or</div>
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" placeholder="you@example.com" required />
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" required />
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Sign In</button>
+        </div>
+      </form>
+      <div class="form-footer">
+        Don't have an account? <a onclick="switchModal('loginModal','signupModal')">Sign Up</a>
+      </div>
+      <div class="form-footer" style="margin-top:8px;">
+        <a onclick="showForgotPassword()">Forgot password?</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Signup Modal -->
+  <div id="signupModal" class="modal-overlay">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('signupModal')">&times;</button>
+      <h2>Create Account</h2>
+      <p>Start your mock interview journey today.</p>
+      <button class="btn btn-google" onclick="signInWithGoogle()">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Continue with Google
+      </button>
+      <div class="divider">or</div>
+      <form id="signupForm" onsubmit="handleSignup(event)">
+        <div class="form-group">
+          <label for="signupName">Full Name</label>
+          <input type="text" id="signupName" placeholder="John Doe" required />
+        </div>
+        <div class="form-group">
+          <label for="signupEmail">Email</label>
+          <input type="email" id="signupEmail" placeholder="you@example.com" required />
+        </div>
+        <div class="form-group">
+          <label for="signupPassword">Password</label>
+          <input type="password" id="signupPassword" placeholder="Min 6 characters" required minlength="6" />
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Create Account</button>
+        </div>
+      </form>
+      <div class="form-footer">
+        Already have an account? <a onclick="switchModal('signupModal','loginModal')">Sign In</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <a class="logo" href="index.html">
+        <span class="logo-bubble">M</span>
+        <span>MockInterview</span>
+      </a>
+      <nav>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#how-it-works">How it works</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="nav-actions">
+        <button class="btn btn-secondary" onclick="openModal('loginModal')">Sign In</button>
+        <button class="btn btn-primary" onclick="openModal('signupModal')">Sign Up</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <span class="chip">AI-Powered Practice</span>
+        <h1>Prepare for interviews with confidence.</h1>
+        <p>Practice real interview questions, get instant feedback, and improve your communication skills with a mock interview experience built for success.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#" onclick="openModal('signupModal')">Start Mock Interview</a>
+          <a class="btn btn-secondary" href="#">View Demo</a>
+        </div>
+        <div class="stats-row">
+          <div class="stat-pill"><strong>1.2K+</strong><span>Users practicing</span></div>
+          <div class="stat-pill"><strong>92%</strong><span>Interview success</span></div>
+          <div class="stat-pill"><strong>15 min</strong><span>Avg. setup time</span></div>
+        </div>
+      </div>
+      <div class="preview-panel">
+        <div class="preview-top"><span>Interview Session</span><span>03:24</span></div>
+        <div class="preview-card">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.9rem; color:#5b647a;">Progress</span><strong>72%</strong>
+          </div>
+          <div class="progress-bar"><span></span></div>
+          <div class="question-box">
+            <h3>Current question</h3>
+            <p>Tell me about a time you handled a conflict at work.</p>
+            <div class="chip-row">
+              <span class="chip">Behavioral</span>
+              <span class="chip">Leadership</span>
+              <span class="chip">2 min</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features">
+    <div class="container">
+      <div class="section-heading"><h2>Everything you need to practice</h2><p>From resume-based questions to coding rounds, our platform helps you prepare for every stage.</p></div>
+      <div class="features-grid">
+        <article class="card"><div class="icon">01</div><h3>Behavioral coaching</h3><p>Practice answers to common leadership, teamwork, and conflict questions.</p></article>
+        <article class="card"><div class="icon">02</div><h3>Technical drills</h3><p>Run through coding challenges and improve your problem-solving flow.</p></article>
+        <article class="card"><div class="icon">03</div><h3>Instant feedback</h3><p>Receive suggestions on clarity, confidence, and answer structure.</p></article>
+        <article class="card"><div class="icon">04</div><h3>Performance insights</h3><p>Track your progress over time and focus on the areas that matter most.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="how-it-works">
+    <div class="container">
+      <div class="section-heading"><h2>How it works</h2><p>Start practicing in just a few easy steps.</p></div>
+      <div class="steps-grid">
+        <article class="card step"><div class="step-number">01</div><h3>Create profile</h3><p>Share your role, experience level, and target company to personalize your sessions.</p></article>
+        <article class="card step"><div class="step-number">02</div><h3>Choose interview mode</h3><p>Select from technical, behavioral, or mixed interview formats.</p></article>
+        <article class="card step"><div class="step-number">03</div><h3>Practice & improve</h3><p>Answer questions, get feedback, and refine your responses with each round.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing">
+    <div class="container">
+      <div class="section-heading"><h2>Choose your plan</h2><p>Flexible options for students, professionals, and teams.</p></div>
+      <div class="features-grid">
+        <article class="card"><h3>Starter</h3><p><strong>$0</strong>/month</p><p>1 mock interview per week</p></article>
+        <article class="card"><h3>Pro</h3><p><strong>$19</strong>/month</p><p>Unlimited practice sessions</p></article>
+        <article class="card"><h3>Team</h3><p><strong>Custom</strong></p><p>For hiring teams and coaching programs</p></article>
+        <article class="card"><h3>Premium</h3><p><strong>$49</strong>/month</p><p>AI feedback + mock panel interviews</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="contact">
+    <div class="container">
+      <div class="cta-box">
+        <div><h3>Ready to ace your next interview?</h3><p>Start your first mock session today and build the confidence you need to stand out.</p></div>
+        <a class="btn btn-primary" href="#" onclick="openModal('signupModal')">Get Started</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Auth Script -->
+  <script type="module">
+    import {
+      auth,
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged,
+      googleProvider,
+      signInWithPopup,
+      sendPasswordResetEmail,
+      updateProfile
+    } from './auth.js';
+
+    const toast = document.getElementById('toast');
+    let toastTimeout;
+
+    function showToast(message, type = 'success') {
+      toast.textContent = message;
+      toast.className = `toast ${type}`;
+      setTimeout(() => toast.classList.add('show'), 10);
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => toast.classList.remove('show'), 4000);
+    }
+
+    // Modal functions
+    window.openModal = (id) => {
+      document.getElementById(id).classList.add('active');
+      document.body.style.overflow = 'hidden';
+    };
+    window.closeModal = (id) => {
+      document.getElementById(id).classList.remove('active');
+      document.body.style.overflow = '';
+    };
+    window.switchModal = (closeId, openId) => {
+      closeModal(closeId);
+      setTimeout(() => openModal(openId), 300);
+    };
+
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+          overlay.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      });
+    });
+
+    // Auth handlers
+    window.handleLogin = async (event) => {
+      event.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        closeModal('loginModal');
+        showToast('Welcome back! 🎉', 'success');
+        // Redirect to dashboard
+        window.location.href = 'dashboard.html';
+      } catch (error) {
+        showToast(error.message, 'error');
+      }
+    };
+
+    window.handleSignup = async (event) => {
+      event.preventDefault();
+      const name = document.getElementById('signupName').value;
+      const email = document.getElementById('signupEmail').value;
+      const password = document.getElementById('signupPassword').value;
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(userCredential.user, { displayName: name });
+        closeModal('signupModal');
+        showToast('Account created! 🚀', 'success');
+        // Redirect to dashboard
+        window.location.href = 'dashboard.html';
+      } catch (error) {
+        showToast(error.message, 'error');
+      }
+    };
+
+    window.signInWithGoogle = async () => {
+      try {
+        const result = await signInWithPopup(auth, googleProvider);
+        closeModal('loginModal');
+        closeModal('signupModal');
+        showToast(`Welcome ${result.user.displayName}! 🎉`, 'success');
+        // Redirect to dashboard
+        window.location.href = 'dashboard.html';
+      } catch (error) {
+        showToast(error.message, 'error');
+      }
+    };
+
+    window.showForgotPassword = async () => {
+      const email = document.getElementById('loginEmail').value;
+      if (!email) { showToast('Please enter your email first.', 'error'); return; }
+      try {
+        await sendPasswordResetEmail(auth, email);
+        showToast('Password reset email sent!', 'success');
+      } catch (error) {
+        showToast(error.message, 'error');
+      }
+    };
+
+    // If user is already logged in, redirect to dashboard
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        window.location.href = 'dashboard.html';
+      }
+    });
+  </script>
+</body>
+</html>    }
     .btn-google {
       background: #fff;
       color: #333;
