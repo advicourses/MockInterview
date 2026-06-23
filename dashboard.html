@@ -114,4 +114,351 @@
       background: #dfe8ff;
     }
     .btn-danger {
-      background: #fee2
+      background: #fee2e2;
+      color: #dc2626;
+    }
+    .btn-danger:hover {
+      background: #fecaca;
+    }
+    .btn-gold {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+    }
+    .btn-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(245, 158, 11, 0.4);
+    }
+    .btn-success {
+      background: #16a34a;
+      color: #fff;
+    }
+    .btn-success:hover {
+      background: #15803d;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .badge-premium {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .badge-free {
+      background: #e5e7eb;
+      color: #4b5563;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #122033;
+      color: #fff;
+      padding: 16px 24px;
+      border-radius: 12px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+      font-weight: 500;
+      z-index: 2000;
+      transform: translateY(120px);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .toast.error { background: #dc2626; }
+    .toast.success { background: #16a34a; }
+
+    /* Dashboard */
+    #dashboard {
+      padding: 40px 0;
+    }
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 30px;
+      margin-top: 20px;
+    }
+    .dashboard-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(18, 32, 51, 0.06);
+      border: 1px solid #eef1f7;
+    }
+    .dashboard-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      color: #122033;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .stat-number {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #5b7cfa;
+    }
+    .stat-label {
+      color: #5b647a;
+      font-size: 0.95rem;
+    }
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f2f7;
+    }
+    .stat-row:last-child {
+      border-bottom: none;
+    }
+    .action-points {
+      list-style: none;
+      padding: 0;
+    }
+    .action-points li {
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f2f7;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .action-points li::before {
+      content: "⚡";
+      font-size: 1.2rem;
+    }
+    .dashboard-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .dashboard-actions .btn {
+      width: 100%;
+      justify-content: center;
+    }
+    .live-mock-card {
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      border: 2px solid #f59e0b;
+    }
+    .live-mock-card h3 {
+      color: #92400e;
+    }
+    .price-tag {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #92400e;
+    }
+
+    @media (max-width: 900px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 640px) {
+      .user-name { display: none; }
+      .nav-actions .btn { padding: 8px 14px; font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="toast" class="toast"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <a class="logo" href="index.html">
+        <span class="logo-bubble">M</span>
+        <span>MockInterview</span>
+      </a>
+      <div id="navActions" class="nav-actions">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </header>
+
+  <!-- Dashboard -->
+  <section id="dashboard">
+    <div class="container">
+      <h2 style="font-size: 1.8rem; margin-bottom: 8px;">Dashboard</h2>
+      <p style="color: #5b647a; margin-bottom: 24px;">Welcome back, <span id="dashboardUserName">User</span>!</p>
+
+      <div class="dashboard-grid">
+        <!-- Left column -->
+        <div>
+          <div class="dashboard-card">
+            <h3>📊 Your Performance</h3>
+            <div class="stat-row">
+              <span class="stat-label">Mock interviews attended</span>
+              <span class="stat-number" id="mockCount">0</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Average score</span>
+              <span class="stat-number" id="avgScore">0%</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Status</span>
+              <span id="premiumBadge"><span class="badge badge-free">Free</span></span>
+            </div>
+          </div>
+
+          <div class="dashboard-card" style="margin-top: 20px;">
+            <h3>🎯 Action Points</h3>
+            <ul class="action-points" id="actionPointsList">
+              <li>Complete at least 3 mock interviews this week</li>
+              <li>Focus on behavioral questions – your confidence score is 68%</li>
+              <li>Review the STAR method for situational questions</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Right column -->
+        <div>
+          <div class="dashboard-card">
+            <h3>🚀 Quick Actions</h3>
+            <div class="dashboard-actions">
+              <button class="btn btn-primary" id="startMockBtn">Start AI Mock Interview</button>
+              <button class="btn btn-secondary" id="viewHistoryBtn">View History</button>
+            </div>
+          </div>
+
+          <div class="dashboard-card live-mock-card" style="margin-top: 20px;">
+            <h3>🎤 Live Mock Interview</h3>
+            <p>Get real-time feedback from expert interviewers.</p>
+            <div style="display: flex; align-items: baseline; gap: 8px; margin: 12px 0;">
+              <span class="price-tag">₹899</span>
+              <span style="color: #92400e;">per session</span>
+            </div>
+            <button class="btn btn-gold" id="liveMockBtn">Book Live Session</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script type="module">
+    import {
+      auth,
+      signOut,
+      onAuthStateChanged
+    } from './auth.js';
+
+    const toast = document.getElementById('toast');
+    let toastTimeout;
+
+    function showToast(message, type = 'success') {
+      toast.textContent = message;
+      toast.className = `toast ${type}`;
+      setTimeout(() => toast.classList.add('show'), 10);
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => toast.classList.remove('show'), 4000);
+    }
+
+    // User stats (localStorage)
+    function getUserStats() {
+      const defaultStats = {
+        mocksAttended: 5,
+        averageScore: 72,
+        actionPoints: [
+          'Complete at least 3 mock interviews this week',
+          'Focus on behavioral questions – your confidence score is 68%',
+          'Review the STAR method for situational questions'
+        ],
+        isPremium: false
+      };
+      const stored = localStorage.getItem('mockStats');
+      if (stored) {
+        try { return { ...defaultStats, ...JSON.parse(stored) }; } catch (e) { return defaultStats; }
+      }
+      return defaultStats;
+    }
+
+    function updateDashboard(user) {
+      const stats = getUserStats();
+      document.getElementById('dashboardUserName').textContent = user.displayName || user.email || 'User';
+      document.getElementById('mockCount').textContent = stats.mocksAttended;
+      document.getElementById('avgScore').textContent = stats.averageScore + '%';
+      
+      const badgeEl = document.getElementById('premiumBadge');
+      badgeEl.innerHTML = stats.isPremium 
+        ? '<span class="badge badge-premium">⭐ Premium</span>'
+        : '<span class="badge badge-free">Free</span>';
+
+      document.getElementById('actionPointsList').innerHTML = 
+        stats.actionPoints.map(p => `<li>${p}</li>`).join('');
+    }
+
+    // Auth state listener
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        // Not logged in - redirect to landing
+        window.location.href = 'index.html';
+        return;
+      }
+
+      // User is logged in - show dashboard
+      const displayName = user.displayName || user.email?.split('@')[0] || 'User';
+      const photoURL = user.photoURL;
+      
+      document.getElementById('navActions').innerHTML = `
+        <div class="user-menu">
+          <div class="user-avatar">
+            ${photoURL ? `<img src="${photoURL}" alt="${displayName}" />` : displayName.charAt(0).toUpperCase()}
+          </div>
+          <span class="user-name">${displayName}</span>
+          <button class="btn btn-danger" onclick="handleLogout()" style="padding:8px 16px; font-size:0.85rem;">Sign Out</button>
+        </div>
+      `;
+
+      updateDashboard(user);
+    });
+
+    // Logout
+    window.handleLogout = async () => {
+      try {
+        await signOut(auth);
+        showToast('Logged out.', 'success');
+        window.location.href = 'index.html';
+      } catch (error) {
+        showToast(error.message, 'error');
+      }
+    };
+
+    // Dashboard actions
+    document.getElementById('startMockBtn').addEventListener('click', () => {
+      showToast('Launching AI Mock Interview... 🎯', 'success');
+      // window.location.href = 'mock.html';
+      alert('Mock interview page will open here.');
+    });
+
+    document.getElementById('viewHistoryBtn').addEventListener('click', () => {
+      const stats = getUserStats();
+      alert(`📊 Your History:\nMocks attended: ${stats.mocksAttended}\nAverage score: ${stats.averageScore}%\nAction points: ${stats.actionPoints.join('\n')}`);
+    });
+
+    document.getElementById('liveMockBtn').addEventListener('click', () => {
+      showToast('Redirecting to book a live session...', 'success');
+      // window.location.href = 'live-booking.html';
+      alert('Live mock interview booking page will open here.\nPrice: ₹899/-');
+    });
+
+    // Hidden premium toggle (double-click dashboard title)
+    document.querySelector('#dashboard h2').addEventListener('dblclick', () => {
+      const stats = getUserStats();
+      stats.isPremium = !stats.isPremium;
+      localStorage.setItem('mockStats', JSON.stringify(stats));
+      if (auth.currentUser) updateDashboard(auth.currentUser);
+      showToast(`Premium ${stats.isPremium ? 'enabled' : 'disabled'}`, 'success');
+    });
+  </script>
+</body>
+</html>
