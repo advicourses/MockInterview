@@ -1,6 +1,5 @@
 // auth.js - Firebase Authentication Module
 
-// Import Firebase SDKs
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
 import { 
   getAuth, 
@@ -14,7 +13,6 @@ import {
   updateProfile
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 
-// Your Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyChAcW59AOxtZmSAckURATcxUgdfIbAqTU",
   authDomain: "advisolutions-80f84.firebaseapp.com",
@@ -25,12 +23,10 @@ const firebaseConfig = {
   measurementId: "G-G542C7G94N"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
-// Export auth functions
 export {
   auth,
   signInWithEmailAndPassword,
